@@ -11,12 +11,15 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import UserPage from './components/UserPage/UserPage';
 import InfoPage from './components/InfoPage/InfoPage';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 import './styles/main.css';
+import TranslatioTheme from './components/TranslatioTheme/TranslatioTheme';
 
 const App = () => (
   <div>
-    <Header title="Project Base" />
+    <MuiThemeProvider theme = {TranslatioTheme}>
+    <Header title="Translat.io" />
     <Router>
       <Switch>
         <Redirect exact from="/" to="/home" />
@@ -41,6 +44,7 @@ const App = () => (
 
       </Switch>
     </Router>
+    </MuiThemeProvider>
   </div>
 );
 

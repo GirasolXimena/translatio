@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Button, TextField } from '../../../node_modules/@material-ui/core';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class RegisterPage extends Component {
       username: '',
       password: '',
       message: '',
+      registered: false,
     };
   }
 
@@ -25,6 +28,9 @@ class RegisterPage extends Component {
         username: this.state.username,
         password: this.state.password,
       };
+      this.setState({
+        registered: true,
+      })
 
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
@@ -66,6 +72,9 @@ class RegisterPage extends Component {
   }
 
   render() {
+    if(this.state.registered) {
+      return <Redirect to = '/' />
+    }
     return (
       <div>
         {this.renderAlert()}
@@ -74,7 +83,7 @@ class RegisterPage extends Component {
           <div>
             <label htmlFor="username">
               Username:
-              <input
+              <TextField
                 type="text"
                 name="username"
                 value={this.state.username}
@@ -85,7 +94,7 @@ class RegisterPage extends Component {
           <div>
             <label htmlFor="password">
               Password:
-              <input
+              <TextField
                 type="password"
                 name="password"
                 value={this.state.password}
@@ -94,12 +103,27 @@ class RegisterPage extends Component {
             </label>
           </div>
           <div>
-            <input
-              type="submit"
+
+            {/* <Link to="/home"> */}
+            <Button
+              variant="contained"
+              color="primary"
               name="submit"
               value="Register"
-            />
-            <Link to="/home">Cancel</Link>
+              onClick={this.registerUser}
+              >
+              Register
+              </Button>
+            {/* </Link> */}
+
+            <Link to="/home">
+              <Button
+                color="secondary"
+                name="cancel"
+              >
+                Cancel
+              </Button>
+            </Link>
           </div>
         </form>
       </div>

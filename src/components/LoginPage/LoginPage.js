@@ -2,11 +2,21 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { triggerLogin, formError, clearError } from '../../redux/actions/loginActions';
+import { Button, TextField } from '../../../node_modules/@material-ui/core';
 
 
 const mapStateToProps = state => ({
   user: state.user,
   login: state.login,
+});
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  },
+  input: {
+    display: 'none',
+  },
 });
 
 class LoginPage extends Component {
@@ -61,40 +71,43 @@ class LoginPage extends Component {
   }
 
   render() {
+    // const { classes } = props;
     return (
       <div>
         { this.renderAlert() }
         <form onSubmit={this.login}>
           <h1>Login</h1>
           <div>
-            <label htmlFor="username">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
+            <TextField
+              id="username"
+              label="username"
+              value={this.state.usermame}
+              type="text"
+              name="username"
+              onChange={this.handleInputChangeFor('username')}
+              placeholder="someone@example.com"
               />
-            </label>
           </div>
           <div>
-            <label htmlFor="password">
-              Password:
-              <input
+              <TextField
+                id="password-input"
+                label="Password"
                 type="password"
-                name="password"
                 value={this.state.password}
                 onChange={this.handleInputChangeFor('password')}
+                margin="normal"
               />
-            </label>
           </div>
           <div>
-            <input
-              type="submit"
+            <Button 
+              variant="contained" 
+              color="primary"
               name="submit"
               value="Log In"
-            />
-            <Link to="/register">Register</Link>
+            >
+            Log In
+            </Button>
+            <Link to="/register"><Button color="secondary"> Register </Button> </Link>
           </div>
         </form>
       </div>
