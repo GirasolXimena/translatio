@@ -11,6 +11,8 @@ const mapStateToProps = state => ({
 class InfoPage extends Component {
   componentDidMount() {
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
+    console.log(this.props);
+    
   }
 
   componentDidUpdate() {

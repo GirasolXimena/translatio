@@ -31,6 +31,8 @@ class LoginPage extends Component {
 
   componentDidMount() {
     this.props.dispatch(clearError());
+    console.log(this.props);
+    
   }
 
   
@@ -104,6 +106,7 @@ class LoginPage extends Component {
               color="primary"
               name="submit"
               value="Log In"
+              onClick={this.login}
             >
             Log In
             </Button>

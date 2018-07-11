@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button, TextField } from '../../../node_modules/@material-ui/core';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom'
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -13,6 +12,7 @@ class RegisterPage extends Component {
       password: '',
       message: '',
       registered: false,
+      registerPage: 1,
     };
   }
 
@@ -75,6 +75,7 @@ class RegisterPage extends Component {
     if(this.state.registered) {
       return <Redirect to = '/' />
     }
+
     return (
       <div>
         {this.renderAlert()}
