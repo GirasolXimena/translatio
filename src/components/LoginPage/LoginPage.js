@@ -10,14 +10,14 @@ const mapStateToProps = state => ({
   login: state.login,
 });
 
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit
-  },
-  input: {
-    display: 'none',
-  },
-});
+// const styles = theme => ({
+//   button: {
+//     margin: theme.spacing.unit
+//   },
+//   input: {
+//     display: 'none',
+//   },
+// });
 
 class LoginPage extends Component {
   constructor(props) {
