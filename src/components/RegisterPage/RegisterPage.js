@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Button, TextField } from '../../../node_modules/@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './RegisterPage.css';
+import RegisterPage1 from "./RegisterPage1";
+import RegisterPage2 from './RegisterPage2';
+import RegisterPage3 from './RegisterPage3';
 
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      birthdate: '',
+      accountType: '',
+      birthdate: '1991-09-17',
       email: '',
       languages: [],
       message: '',
@@ -37,7 +40,7 @@ componentDidMount() {
   nextPageHandler = () => {
     if(this.state.password === this.state.confirmPassword) {
     console.log('click');
-    console.log(this.state.languages);
+    console.log(this.state);
     
     this.setState({
       registerPage: this.state.registerPage+1
@@ -60,12 +63,23 @@ componentDidMount() {
       const body = {
         username: this.state.username,
         password: this.state.password,
+        accountType: this.state.accountType,
       };
+      const userData = {
+        birthdate: this.state.birthdate,
+        email: this.state.email,
+        name: this.state.name,
+        nativeLang: this.state.nativeLang,
+        targetLang: this.state.targetLang,
+      }
       this.setState({
         registered: true,
       })
 
       // making the request to the server to post the new user's registration
+      console.log('reqBody', body);
+      
+      axios.post('/api/user/userData', userData)
       axios.post('/api/user/register/', body)
         .then((response) => {
           if (response.status === 201) {
@@ -85,13 +99,15 @@ componentDidMount() {
   } // end registerUser
 
   handleInputChangeFor = propertyName => (event) => {
+    console.log(this.state);
+    
     this.setState({
       [propertyName]: event.target.value,
     });
   }
 
   renderAlert() {
-    if (this.state.message !== '') {
+    if (this.props.message !== '') {
       return (
         <h2
           className="alert"
@@ -113,172 +129,53 @@ componentDidMount() {
 
     if (this.state.registerPage === 1) {
       return (
-        <div>
-        <h1>Welcome to Translat.io</h1>
-        <h3>Your bridge to the world</h3>
-        <form onSubmit={this.nextPageHandler}>
-          <label htmlFor="name">
-            Name:
-            <input 
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleInputChangeFor('name')}
-              />
-            </label>
-          <label htmlFor="username">
-          Username:
-          <input 
-            type="text"
-            name="username"
-            value={this.state.username}
-            onChange={this.handleInputChangeFor('username')}
-          />
-        </label>
-        <label htmlFor="birthdate">
-          DOB:
-          <input 
-            type="date"
-            name="birthdate"
-            value={this.state.birthdate}
-            onChange={this.handleInputChangeFor('birthdate')}
-          />
-        </label>
-        <label htmlFor="email">
-          Email: 
-          <input 
-            type="text"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleInputChangeFor('email')}
-          />
-        </label>
-            <label htmlFor="password">
-              Password:
-              <TextField
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
-              />
-              </label>
-            <label htmlFor="confirmPassword">
-              Confirm Password:
-              <TextField
-                type="password"
-                name="confirmPassword"
-                value={this.state.confirmPassword}
-                onChange={this.handleInputChangeFor('confirmPassword')}
-              />
-              </label>
-              <Button
-                color="primary"
-                variant="contained"
-                name="nextPage"
-                onClick={this.nextPageHandler}
-                className="nextButton"
-                >
-                Next Page
-              </Button>
-        </form>
-      </div>
+       <RegisterPage1
+       handleInputChangeFor={this.handleInputChangeFor}
+       nextPageHandler={this.nextPageHandler}
+       accountType = {this.state.accountType}
+       name = {this.state.name}
+       username = {this.state.username}
+       birthdate = {this.state.birthdate}
+       email = {this.state.email}
+       nativeLang = {this.state.nativeLang}
+       targetLang = {this.state.targetLang}
+       password = {this.state.password}
+       confirmPassword = {this.state.confirmPassword}
+       />
       )
     }
-    if(this.state.registerPage === 2) {
+    
+    if (this.state.registerPage === 2) {
       return (
-        <div>
-          <h3>Page 2 of 3</h3>
-            <form>
-              <select name="native-lang" id="native-lang">
-                {this.state.languages.map(language => 
-                   <option 
-                    value={language.name} 
-                    id={language.id}
-                    >
-                    {language.name}
-                    </option>)}
-              </select>
-              <select name="target-lang" id="target-lang">
-                {this.state.languages.map(language => 
-                   <option
-                   value={language.name} 
-                   id={language.id}
-                   >{language.name}
-                   </option>)}
-              </select>
-              <Button
-                color="primary"
-                variant="contained"
-                name="nextPage"
-                onClick={this.nextPageHandler}
-                className="nextButton"
-                >
-                Next Page
-              </Button>
-            </form>
-        </div>
+        <RegisterPage2
+        handleInputChangeFor={this.handleInputChangeFor}
+        nextPageHandler={this.nextPageHandler}
+        languages={this.state.languages}
+        targetLang={this.state.targetLang}
+        nativeLang={this.state.nativeLang}
+        />
       )
     }
+
+
     if(this.state.registerPage ===3) {
       return (
-        <div>
-          {this.renderAlert()}
-          <form onSubmit={this.registerUser}>
-            <h1>Please Confirm your information</h1>
-            <div>
-
-                Name:
-                <h6>
-                {this.state.name}
-                </h6>
-                Username:
-                <h6>
-                {this.state.username}
-                </h6>
-                Birthday:
-                <h6>
-                {this.state.birthdate}
-                </h6>
-                email address:
-                <h6>
-                {this.state.email}
-                </h6>
-                <h6>
-                Language Pair:
-                </h6>
-                <p>{this.state.nativeLang} => {this.state.targetLang}</p>
-                <input type="submit"/>
-
-            </div>
-            <div>
-  
-              {/* <Link to="/home"> */}
-              <Button
-                variant="contained"
-                color="primary"
-                name="submit"
-                value="Register"
-                onClick={this.registerUser}
-                >
-                Register
-                </Button>
-              {/* </Link> */}
-  
-              <Link to="/home">
-                <Button
-                  color="secondary"
-                  name="cancel"
-                >
-                  Cancel
-                </Button>
-              </Link>
-            </div>
-          </form>
-        </div>
+        <RegisterPage3
+        registerUser= {this.registerUser}
+        name = {this.state.name}
+        username = {this.state.username}
+        birthdate = {this.state.birthdate}
+        email = {this.state.email}
+        nativeLang = {this.state.nativeLang}
+        targetLang = {this.state.targetLang}
+        renderAlert = {this.renderAlert}
+        message = {this.state.message}
+        />
       );
     }
   }
 }
+
 
 export default RegisterPage;
 
