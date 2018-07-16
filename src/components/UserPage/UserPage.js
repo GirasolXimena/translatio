@@ -9,11 +9,12 @@ import { triggerLogout } from '../../redux/actions/loginActions';
 
 const mapStateToProps = state => ({
   user: state.user,
+  account_type: state.account_type
 });
 
 class UserPage extends Component {
   componentDidMount() {
-    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });    
     
   }
 
@@ -40,7 +41,7 @@ class UserPage extends Component {
           <h1
             id="welcome"
           >
-            Welcome, { this.props.user.userName }!
+            Welcome, { this.props.user.userName }! You are a {this.props.user.account_type}
           </h1>
           <button
             onClick={this.logout}

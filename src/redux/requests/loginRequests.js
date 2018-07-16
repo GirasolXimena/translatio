@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 export function callLogin(payload) {
+  console.log('payload in loginRequests', payload);
+  
   const body = ({
     username: payload.username,
     password: payload.password,
+    account_type: payload.account_type
   });
 
   const config = {

@@ -85,10 +85,10 @@ class RegisterPage1 extends Component {
                       Business or Translator?
                       </FormLabel>
                     <RadioGroup
-                      aria-label="accountType"
-                      name="accountType"
-                      value={this.props.accountType}
-                      onChange={this.props.handleInputChangeFor('accountType')}
+                      aria-label="account_type"
+                      name="account_type"
+                      value={this.props.account_type}
+                      onChange={this.props.handleInputChangeFor('account_type')}
                       >
                       <FormControlLabel
                         value="Business"

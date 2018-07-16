@@ -11,7 +11,7 @@ class RegisterPage extends Component {
     super(props);
 
     this.state = {
-      accountType: '',
+      account_type: '',
       birthdate: '1991-09-17',
       email: '',
       languages: [],
@@ -63,7 +63,7 @@ componentDidMount() {
       const body = {
         username: this.state.username,
         password: this.state.password,
-        accountType: this.state.accountType,
+        account_type: this.state.account_type,
       };
       const userData = {
         birthdate: this.state.birthdate,
@@ -132,7 +132,7 @@ componentDidMount() {
        <RegisterPage1
        handleInputChangeFor={this.handleInputChangeFor}
        nextPageHandler={this.nextPageHandler}
-       accountType = {this.state.accountType}
+       account_type = {this.state.account_type}
        name = {this.state.name}
        username = {this.state.username}
        birthdate = {this.state.birthdate}
