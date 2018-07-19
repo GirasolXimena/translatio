@@ -14,6 +14,31 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
+router.get('/profile', (req, res) => {
+  console.log('getting profile');
+  const queryText = `
+  SELECT * FROM "Users";`
+
+  pool.query(queryText)
+  .then((result) => {
+    console.log(result.rows);
+    res.send(result.rows)})
+  .catch(err => res.send(err))
+})
+
+router.post('/profile', (req, res, next) => {
+  console.log('posting pic', req.body);
+  
+  const queryText = `
+  UPDATE "Users"
+  SET profile_pic = $1
+  WHERE id=($2);
+  `;
+  pool.query(queryText, [req.body, 2])
+  .then(() => { res.sendStatus(201); })
+  .catch((err) => { next(err); });
+})
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted

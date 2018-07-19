@@ -5,6 +5,7 @@ import Nav from '../../components/Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import ImageUpload from '../ImageUpload/ImageUpload';
 
 
 const mapStateToProps = state => ({
@@ -34,15 +35,30 @@ class UserPage extends Component {
     let content = null;
 
     if (this.props.user.userName) {
-      console.log(this.props);
-      
+
+      if (this.props.user.account_type === 'Business') {
       content = (
         <div>
           <h1
             id="welcome"
           >
-            Welcome, { this.props.user.userName }! You are a {this.props.user.account_type}
+            Hello, { this.props.user.userName }! Welcome to Translat.io. You are a {this.props.user.account_type}
           </h1>
+          <div>
+                What would you like to do?
+                <button>
+                  Request new translation
+                </button>
+                <button>
+                  Review completed translations
+                </button>
+                <button>
+                  My Account
+                </button>
+              </div>
+        <ImageUpload />
+
+
           <button
             onClick={this.logout}
           >
@@ -50,6 +66,35 @@ class UserPage extends Component {
           </button>
         </div>
       );
+    }
+
+      if (this.props.user.account_type === 'Translator') {
+        content = (
+          <div>
+            <h1>
+              Hello, { this.props.user.userName }! Welcome to Translat.io. You are a {this.props.user.account_type}
+            </h1>
+              <div>
+                What would you like to do?
+                <button>
+                  Request new translation
+                </button>
+                <button>
+                  Review completed translations
+                </button>
+                <button>
+                  My Account
+                </button>
+              </div>
+            <ImageUpload />
+            <button
+            onClick={this.logout}
+          >
+            Log Out
+          </button>
+          </div>
+        )
+      }
     }
 
     return (
