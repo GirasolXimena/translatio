@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, IconButton, Switch, FormControlLabel, FormGroup, MenuItem, Menu } from '../../../node_modules/@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Switch, FormControlLabel, FormGroup, MenuItem, Menu, Button } from '../../../node_modules/@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { Redirect } from 'react-router-dom';
 
-
+const  mapStateToProps = (state, ownProps) => {
+    return {
+        user: state.user
+    }
+}
 const styles = {
   root: {
     flexGrow: 1,
@@ -23,7 +28,13 @@ class MenuAppBar extends Component {
     state = { 
         auth: true,
         anchorEl: null,
+        goHome: null,
      };
+
+     componentDidMount() {
+         console.log('props from menuappbar', this.props);
+         
+     }
 
     handleChange = (event, checked) => {
         this.setState({auth: checked})
@@ -37,6 +48,9 @@ class MenuAppBar extends Component {
         this.setState({anchorEl: null})
     }
     render() { 
+        if (this.state.goHome) {
+            return <Redirect exact from='/' to ='/home' />
+        }
         const { classes } = this.props;
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
@@ -56,7 +70,7 @@ class MenuAppBar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" className={classes.flex}>
-                            Translat.io
+                            <Button onClick={()=> this.setState({ goHome: true })}>Translat.io </Button>
                         </Typography>
                         {auth && (
                             <div>

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { triggerLogin, formError, clearError } from '../../redux/actions/loginActions';
 import { Button, TextField } from '../../../node_modules/@material-ui/core';
+import Header from '../Header/Header';
+ 
 
 
 const mapStateToProps = state => ({
@@ -75,7 +77,10 @@ class LoginPage extends Component {
   render() {
     // const { classes } = props;
     return (
+
       <div>
+      <Header title="Translat.io" />
+
         { this.renderAlert() }
         <form onSubmit={this.login}>
           <h1>Login</h1>

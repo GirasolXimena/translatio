@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#000000">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://transloadit.edgly.net/releases/uppy/v0.26.0/dist/uppy.min.css" rel="stylesheet">
+
 
     <title>App</title>
   </head>
@@ -14,5 +16,11 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="react-root"></div>
+    <script src="https://transloadit.edgly.net/releases/uppy/v0.26.0/dist/uppy.min.js"></script>
+    <script>
+      var uppy = Uppy.Core({ autoProceed: false })
+      uppy.use(Uppy.DragDrop, { target: '#drag-drop-area' })
+      uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
+    </script>
   </body>
 </html>

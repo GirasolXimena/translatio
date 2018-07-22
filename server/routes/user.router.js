@@ -3,8 +3,26 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
-
+const multer = require('multer')
 const router = express.Router();
+const app = express();
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(morgan('dev'));
+
+const storage = multer.diskStorage({
+  destination: '../photos',
+  filename: function (req, file, callback) {
+    crypto.pseudoRandomBytes(16, function(err, raw) {
+      if (err) return callback(err);
+      
+      callback(null, raw.toString('hex') + path.extname(file.originalname));
+    });  
+  }
+})
+const upload = multer({ storage: storage });
 
 // Handles Ajax request for user information if user is authenticated
 router.get('/', rejectUnauthenticated, (req, res) => {
@@ -22,22 +40,42 @@ router.get('/profile', (req, res) => {
   pool.query(queryText)
   .then((result) => {
     console.log(result.rows);
+    console.log(result.rows);
+    
     res.send(result.rows)})
   .catch(err => res.send(err))
 })
 
-router.post('/profile', (req, res, next) => {
-  console.log('posting pic', req.body);
+// router.post('/profile', (req, res, next) => {
+  // console.log('posting pic', req.body);
   
-  const queryText = `
-  UPDATE "Users"
-  SET profile_pic = $1
-  WHERE id=($2);
-  `;
-  pool.query(queryText, [req.body, 2])
-  .then(() => { res.sendStatus(201); })
-  .catch((err) => { next(err); });
-})
+  // const queryText = `
+  // UPDATE "Users"
+  // SET profile_pic = $1
+  // WHERE id=($2);
+  // `;
+  // pool.query(queryText, [req.body, 2])
+  // .then(() => { res.sendStatus(201); })
+  // .catch((err) => { next(err); });
+
+  router.post('/profile', upload.single('avatar'), (req, res) => {
+    console.log('posting pic');
+    console.log(req.body);
+    
+    if (!req.file) {
+      console.log("No file received");
+      return res.send({
+        success: false
+      });
+  
+    } else {
+      console.log('file received');
+      return res.send({
+        success: true
+      })
+    }
+  });
+// })
 
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen

@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Header from '../Header/Header';
+
 
 import Nav from '../../components/Nav/Nav';
-
+import { Redirect } from 'react-router-dom';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import ImageUpload from '../ImageUpload/ImageUpload';
+import BusinessButtons from '../BusinessButtons/BusinessButtons';
+import TranslationButtons from '../TranslationButtons/TranslationButtons';
 
 
 const mapStateToProps = state => ({
   user: state.user,
-  account_type: state.account_type
+  account_type: state.account_type,
 });
 
 class UserPage extends Component {
+  state = {
+    redirect: null,
+  }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });    
+    console.log(this.state);
     
   }
 
@@ -26,35 +34,52 @@ class UserPage extends Component {
     }
   }
 
+
+  handleInputChangeFor = propertyName => (event) => {
+    console.log(this.state);
+    
+    this.setState({
+      [propertyName]: event.target.value,
+    });
+  }
+  
+  navClick = (event) => {
+    console.log('click', event.target.value);
+    this.setState({ 
+      redirect: event.target.value,
+     });
+    
+  }
+
   logout = () => {
     this.props.dispatch(triggerLogout());
     // this.props.history.push('home');
   }
 
   render() {
+    if (this.state.redirect) {
+       return <Redirect to = {`/${this.state.redirect}`} />;
+    }
+
     let content = null;
 
     if (this.props.user.userName) {
 
+      // Business Page
       if (this.props.user.account_type === 'Business') {
       content = (
         <div>
+              <Header title="Translat.io" />
           <h1
             id="welcome"
           >
             Hello, { this.props.user.userName }! Welcome to Translat.io. You are a {this.props.user.account_type}
           </h1>
           <div>
-                What would you like to do?
-                <button>
-                  Request new translation
-                </button>
-                <button>
-                  Review completed translations
-                </button>
-                <button>
-                  My Account
-                </button>
+            <BusinessButtons 
+            navClick = {this.navClick}
+            />
+     
               </div>
         <ImageUpload />
 
@@ -71,25 +96,18 @@ class UserPage extends Component {
       if (this.props.user.account_type === 'Translator') {
         content = (
           <div>
+                <Header title="Translat.io" />
             <h1>
               Hello, { this.props.user.userName }! Welcome to Translat.io. You are a {this.props.user.account_type}
             </h1>
               <div>
-                What would you like to do?
-                <button>
-                  Request new translation
-                </button>
-                <button>
-                  Review completed translations
-                </button>
-                <button>
-                  My Account
-                </button>
+                <TranslationButtons
+                  navClick = {this.navClick} />
               </div>
             <ImageUpload />
             <button
             onClick={this.logout}
-          >
+            >
             Log Out
           </button>
           </div>

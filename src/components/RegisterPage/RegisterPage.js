@@ -5,6 +5,7 @@ import './RegisterPage.css';
 import RegisterPage1 from "./RegisterPage1";
 import RegisterPage2 from './RegisterPage2';
 import RegisterPage3 from './RegisterPage3';
+import Header from '../Header/Header';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -121,6 +122,7 @@ componentDidMount() {
   }
 
   render() {
+    <Header title="Translat.io" />
 
 
     if(this.state.registered) {
@@ -129,6 +131,8 @@ componentDidMount() {
 
     if (this.state.registerPage === 1) {
       return (
+      <div>
+      <Header title="Translat.io" />
        <RegisterPage1
        handleInputChangeFor={this.handleInputChangeFor}
        nextPageHandler={this.nextPageHandler}
@@ -142,11 +146,14 @@ componentDidMount() {
        password = {this.state.password}
        confirmPassword = {this.state.confirmPassword}
        />
+       </div>
       )
     }
     
     if (this.state.registerPage === 2) {
       return (
+        <div>
+          <Header title="Translat.io" />
         <RegisterPage2
         handleInputChangeFor={this.handleInputChangeFor}
         nextPageHandler={this.nextPageHandler}
@@ -154,12 +161,15 @@ componentDidMount() {
         targetLang={this.state.targetLang}
         nativeLang={this.state.nativeLang}
         />
+        </div>
       )
     }
 
 
     if(this.state.registerPage ===3) {
       return (
+        <div>
+              <Header title="Translat.io" />
         <RegisterPage3
         registerUser= {this.registerUser}
         name = {this.state.name}
@@ -171,6 +181,7 @@ componentDidMount() {
         renderAlert = {this.renderAlert}
         message = {this.state.message}
         />
+        </div>
       );
     }
   }

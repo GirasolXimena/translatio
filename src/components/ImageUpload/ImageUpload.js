@@ -5,7 +5,8 @@ class ImageUpload extends Component {
         state = { 
             file: '',
             imagePreviewUrl: '',
-            imageArray: []
+            imageArray: [],
+            imageFromServer: ''
          }
 
          componentDidMount() {
@@ -16,21 +17,44 @@ class ImageUpload extends Component {
                  imageArray: response.data[1].profile_pic
                 })
             )
+            let chunk = this.state.imageArray
+            console.log(chunk);
+   
+            
+            const objJsonStr = JSON.stringify(chunk); 
+            console.log(objJsonStr);
+            
+            const objJsonB64 = new Buffer(objJsonStr).toString("base64");
+            console.log(objJsonB64);
+            
+            this.setState({ 
+                imageFromServer: objJsonB64 });
+            
          }
          componentDidUpdate(prevProps, prevState) {
              console.log(this.state);
             //  let buffer = Buffer.from(this.state.imageArray, 'hex')
             //  console.log(buffer);
+                // img.src = imageUrl
+                // console.log(imageUrl);
+                
+                
+                // let textChunk = chunk.toString('utf8');
+            //    console.log(textChunk);
+               
+                // process utf8 text chunk
+         
              
          }
     handleSubmit = (event) => {
         event.preventDefault();
-        let imageData = this.state.imagePreviewUrl;
-        let imageFormData = new FormData(imageData);
-        // console.log(imageData);
-        imageFormData.append('imageFile', imageData)
+        let file = this.state.file;
+        // let imageFormData = new FormData(imageData);
+        // // console.log(imageData);
+        // imageFormData.append('imageFile', imageData)
+        console.log('sending file', file);
         
-        axios.post('/api/user/profile', imageFormData)
+        axios.post('/api/user/profile', file)
     }
 
     handleImageChange = (event) => {
@@ -46,9 +70,11 @@ class ImageUpload extends Component {
         // };
         // reader.readAsText(file);  
         
-        console.log('reader, file', reader, file);
-
-        reader.readAsDataURL(file);
+        console.log('reader',file);
+        this.setState({ 
+            file: file
+         });
+        // reader.readAsDataURL(file);
         reader.onloadend = (event) => {
             this.setState({
                 file: file,
@@ -65,9 +91,10 @@ class ImageUpload extends Component {
 
 
 
-
+    
     render() { 
         let $imagePreview = null;
+        
         
         if (this.state.imagePreviewUrl) {
             $imagePreview = (<img src={this.state.imagePreviewUrl} alt = {''} />);
@@ -87,6 +114,10 @@ class ImageUpload extends Component {
 
         return (
             <div>
+        <form action="/upload" enctype="multipart/form-data" method="POST"> 
+        <input type="file" name="photo" />
+        <input type="submit" value="Upload Photo"/>
+        </form>
                 <form onSubmit={this.handleSubmit}>
                     <input type="file" onChange={this.handleImageChange} />
                     <button type="submit" onClick={this.handleSubmit}>Upload Image</button>

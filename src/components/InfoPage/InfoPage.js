@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Header from '../Header/Header';
+
 
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
@@ -27,6 +29,8 @@ class InfoPage extends Component {
     if (this.props.user.userName) {
       content = (
         <div>
+              <Header title="Translat.io" />
+
           <p>
             Info Page
           </p>
@@ -36,6 +40,8 @@ class InfoPage extends Component {
 
     return (
       <div>
+            <Header title="Translat.io" />
+
         <Nav />
         { content }
       </div>
