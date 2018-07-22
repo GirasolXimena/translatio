@@ -122,8 +122,7 @@ componentDidMount() {
   }
 
   render() {
-    <Header title="Translat.io" />
-
+   
 
     if(this.state.registered) {
       return <Redirect to = '/' />

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, IconButton, Switch, FormControlLabel, FormGroup, MenuItem, Menu, Button } from '../../../node_modules/@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, Button } from '../../../node_modules/@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Redirect } from 'react-router-dom';
 
-const  mapStateToProps = (state, ownProps) => {
-    return {
-        user: state.user
-    }
-}
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -56,14 +52,14 @@ class MenuAppBar extends Component {
         const open = Boolean(anchorEl);
         return ( 
             <div className={classes.root}>
-                <FormGroup>
+                {/* <FormGroup>
                     <FormControlLabel
                         control={
                             <Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />
                         }
                         label={auth ? 'Logout' : 'Login'}
                     />
-                </FormGroup>
+                </FormGroup> */}
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">

@@ -14,7 +14,8 @@ import TranslationButtons from '../TranslationButtons/TranslationButtons';
 
 const mapStateToProps = state => ({
   user: state.user,
-  account_type: state.account_type,
+  // account_type: state.account_type,
+  // user_id: state.id
 });
 
 class UserPage extends Component {
@@ -32,6 +33,9 @@ class UserPage extends Component {
       this.props.history.push('home');
       
     }
+
+    console.log(this.props);
+    
   }
 
 

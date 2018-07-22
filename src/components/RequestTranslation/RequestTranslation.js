@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import { Paper, FormControl, TextField, Button } from '../../../node_modules/@material-ui/core';
 import axios from 'axios';
 import LanguageSelector from '../LanguageSelector/LanguageSelector';
+import { connect } from 'react-redux';
 // import Uppy, { XHRUpload, DragDrop } from 'uppy';
 // import Dashboard from '@uppy/dashboard';
 // import Tus from '@uppy/tus';
@@ -22,6 +23,14 @@ const paperProps = {
 
 }
 
+const mapStateToProps = (state, ownProps) => {
+    return {
+        user: state.user
+    }
+    
+    
+}
+
 class RequestTranslation extends Component {
     state = { 
         reqNatLang: 0,
@@ -29,6 +38,7 @@ class RequestTranslation extends Component {
         reqPage: 0,
         translationText: '',
         languages: [],
+        user_id: this.props.user.account_id
      }
     
     
@@ -41,14 +51,15 @@ class RequestTranslation extends Component {
             })
         })
         
-        console.log(this.props);
+        console.log('props', this.props);
         
         
     }
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.state.languages);
+        console.log(this.props);
         
     }
+  
     
     handleInputChangeFor = propertyName => (event) => {
         console.log(this.state);
@@ -70,6 +81,20 @@ class RequestTranslation extends Component {
     prevPageHandler = () => {
         this.setState({ 
             reqPage: this.state.reqPage-1 });
+        
+    }
+
+    submitTranslation = () => {
+        console.log('click');
+        console.log(this.state);
+        
+        axios.post('/api/translations/request', 
+        {
+            business_id: this.state.user_id,
+            text: this.state.translationText,
+            trans_src_lang: this.state.reqNatLang,
+            trans_targ_lang: this.state.reqTargLang,
+        })
         
     }
 
@@ -113,7 +138,7 @@ class RequestTranslation extends Component {
             <Paper>
                 <h3>Start typing or upload document</h3>
                 <FormControl>
-                    <TextField id='transReq' type='text' inputProps={paperProps} />
+                    <TextField onChange={this.handleInputChangeFor('translationText')} id='transReq' type='text' inputProps={paperProps} />
 
                 </FormControl>
                 <br />
@@ -125,7 +150,30 @@ class RequestTranslation extends Component {
                 </Button>
             </Paper>
         </div> );
+
+    if (this.state.reqPage===2) return (
+        <div>
+            <Header title="Translat.io" />
+            <h1>Are you ready to submit translation?</h1>
+            <h2>Translation Summary</h2>
+           
+                <h4>Source Language</h4>
+                {this.state.languages[this.state.reqNatLang-1].name}
+                <h4>Target Language</h4>
+                {this.state.languages[this.state.reqTargLang-1].name}
+                <h4>Translation Text</h4>
+            <p>{this.state.translationText}</p>
+            <Button onClick={this.prevPageHandler}>
+                    No
+                </Button>
+                <Button onClick={this.submitTranslation}>
+                    Yes
+                </Button>
+         
+        
+        </div>
+    )
     }
 }
  
-export default RequestTranslation;
+export default connect(mapStateToProps)(RequestTranslation);

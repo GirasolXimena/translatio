@@ -25,7 +25,8 @@ class LanguageSelector extends Component {
                         id={this.props.id}
                         >
                   {this.props.languages.map(language => 
-                       <MenuItem                  
+                       <MenuItem   
+                       key={language.id}               
                        value={language.id} 
                        id={language.id}
                        >
