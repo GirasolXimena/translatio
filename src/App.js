@@ -18,6 +18,7 @@ import AccountPage from './components/AccountPage/AccountPage';
 import RequestTranslation from './components/RequestTranslation/RequestTranslation';
 import CompletedTranslations from './components/CompletedTranslations/CompletedTranslations';
 import NewTranslation from './components/NewTranslation/NewTranslation';
+import HomePage from './components/HomePage/HomePage';
 
 const App = () => (
   <div>
@@ -28,8 +29,12 @@ const App = () => (
         <Redirect exact from="/" to="/home" />
         <Route
           path="/home"
-          component={LoginPage}
+          component={HomePage}
         />
+        <Route
+          path="/login"
+          component={LoginPage}
+          />
         <Route
           path="/register"
           component={RegisterPage}
