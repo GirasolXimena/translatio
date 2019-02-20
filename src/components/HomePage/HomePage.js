@@ -9,7 +9,7 @@ class HomePage extends Component {
         return ( 
             <div>
                 <h1>Translat.io</h1>
-                <p>work anywhere</p>
+                <p>work anywhere.</p>
             </div>
          );
     }
